@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Level & Words Display</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script defer src="./src/index.js"></script> <!-- JavaScript File -->
+    <script src="https://cdn.tailwindcss.com"></script> <!-- Tailwind CSS -->
+</head>
+<body class="bg-gray-100 p-5 min-h-screen">
+
+    <h1 class="text-3xl font-bold text-center text-blue-700 mb-5">Level & Words Display</h1>
+
+    <!-- Level Display Area -->
+    <div id="displayArea" class="flex flex-wrap gap-3 justify-center"></div>
+
+    <!-- Words Display Area -->
+    <div id="wordsArea" class="mt-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+
+    <!-- Word Details Modal -->
+    <div id="modal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+        <div class="modal-content p-5 bg-white rounded-lg shadow-lg relative w-96">
+            <button class="absolute top-2 right-2 text-xl" onclick="closeModal()">🗙</button>
+            <div id="modalContent"></div>
+        </div>
+    </div>
+
+</body>
+</html>

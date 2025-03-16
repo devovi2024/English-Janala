@@ -1,19 +1,23 @@
 const Word = require("../models/word.model");
 const Level = require("../models/level.model");
+const mongoose = require("mongoose");
 
-// নতুন Word তৈরি করা
 const createWord = async (req, res) => {
     try {
         const { word, meaning, pronunciation, sentence = "", partsOfSpeech, level, synonyms = [], points = 0 } = req.body;
 
-        // ✅ চেক করা হচ্ছে Level ID বৈধ কিনা
         if (!level) {
             return res.status(400).json({ message: "Level ID is required." });
         }
 
+        // ✅ Level ID কে ObjectId তে কনভার্ট করা
+        if (!mongoose.Types.ObjectId.isValid(level)) {
+            return res.status(400).json({ message: "Invalid Level ID format." });
+        }
+
         const existingLevel = await Level.findById(level);
         if (!existingLevel) {
-            return res.status(404).json({ message: "Invalid Level ID. Level not found." });
+            return res.status(404).json({ message: "Level not found." });
         }
 
         // ✅ নতুন Word তৈরি করা
@@ -34,6 +38,7 @@ const createWord = async (req, res) => {
         res.status(500).json({ message: "Server error", error: error.message });
     }
 };
+
 
 // সব Word রিটার্ন করা
 const getAllWords = async (req, res) => {
@@ -75,4 +80,3 @@ module.exports = { createWord, getAllWords, getWordById, getWordsByLevel };
 
 
 
-// module.exports = { createWord, getAllWords, getWordById };

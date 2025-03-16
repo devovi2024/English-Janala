@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Level</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; margin: 50px; }
+        form { max-width: 300px; margin: auto; }
+        input, button { width: 100%; padding: 10px; margin: 5px 0; }
+    </style>
+</head>
+<body>
+    <h2>Create a New Level</h2>
+    <form id="levelForm">
+        <input type="number" id="level_no" placeholder="Enter Level Number" required>
+        <input type="text" id="lessonName" placeholder="Enter Lesson Name" required>
+        <button type="submit">Create Level</button>
+    </form>
+    <p id="message"></p>
+
+    <script>
+        document.getElementById("levelForm").addEventListener("submit", async function(event) {
+            event.preventDefault();
+            const level_no = document.getElementById("level_no").value;
+            const lessonName = document.getElementById("lessonName").value;
+            
+            const response = await fetch("http://localhost:5000/api/levels", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ level_no, lessonName })
+            });
+            
+            const data = await response.json();
+            document.getElementById("message").innerText = response.ok ? "Level Created Successfully!" : data.message;
+        });
+    </script>
+</body>
+</html>

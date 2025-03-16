@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Word</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; margin: 50px; } 
+        form { max-width: 300px; margin: auto; }
+        input, button { width: 100%; padding: 10px; margin: 5px 0; }
+        #wordList { max-width: 500px; margin: 20px auto; text-align: left; }
+        .word-item { border: 1px solid #ddd; padding: 10px; margin: 5px 0; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <h2>Add a New Word</h2>
+    <form id="wordForm">
+        <label for="word">Word:</label>
+        <input type="text" id="word" required><br><br>
+
+        <label for="meaning">Meaning:</label>
+        <input type="text" id="meaning" required><br><br>
+
+        <label for="pronunciation">Pronunciation:</label>
+        <input type="text" id="pronunciation"><br><br>
+
+        <label for="sentence">Example Sentence:</label>
+        <input type="text" id="sentence"><br><br>
+
+        <label for="partsOfSpeech">Parts of Speech:</label>
+        <input type="text" id="partsOfSpeech"><br><br>
+
+        <label for="levelId">Level ID (MongoDB ObjectId):</label>
+        <input type="text" id="levelId" required placeholder="Enter Level ObjectId"><br><br>
+
+        <button type="submit">Add Word</button>
+    </form>
+
+    <p id="responseMessage"></p>
+
+    <h2>Word List</h2>
+    <div id="wordList"></div>
+
+<script>
+document.getElementById("wordForm").addEventListener("submit", async function (e) {
+    e.preventDefault();
+
+    const word = document.getElementById("word").value.trim();
+    const meaning = document.getElementById("meaning").value.trim();
+    const pronunciation = document.getElementById("pronunciation").value.trim();
+    const sentence = document.getElementById("sentence").value.trim();
+    const partsOfSpeech = document.getElementById("partsOfSpeech").value.trim();
+    const levelId = document.getElementById("levelId").value.trim();
+
+    // ✅ ObjectId validation (24-character hex string)
+    if (!/^[0-9a-fA-F]{24}$/.test(levelId)) {
+        alert("Invalid Level ID. It must be a 24-character MongoDB ObjectId.");
+        return;
+    }
+
+    const wordData = { word, meaning, pronunciation, sentence, partsOfSpeech, level: levelId };
+
+    try {
+        const response = await fetch("http://localhost:5000/api/words", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(wordData)
+        });
+
+        const result = await response.json();
+        if (response.ok) {
+            document.getElementById("responseMessage").textContent = "✅ Word added successfully!";
+            document.getElementById("wordForm").reset();
+            fetchWords(); // নতুন ওয়ার্ড লিস্ট রিফ্রেশ
+        } else {
+            document.getElementById("responseMessage").textContent = "❌ Error: " + result.message;
+        }
+    } catch (error) {
+        console.error("Error:", error);
+        document.getElementById("responseMessage").textContent = "❌ Server error.";
+    }
+});
+
+// ✅ **Word List ফাংশন (GET API)**
+async function fetchWords() {
+    try {
+        const response = await fetch("http://localhost:5000/api/words");
+        const words = await response.json();
+
+        const wordListDiv = document.getElementById("wordList");
+        wordListDiv.innerHTML = ""; // পুরনো লিস্ট মুছে ফেলুন
+
+        words.forEach(word => {
+            const wordItem = document.createElement("div");
+            wordItem.classList.add("word-item");
+            wordItem.innerHTML = `<strong>${word.word}</strong> - ${word.meaning}`;
+            wordListDiv.appendChild(wordItem);
+
+            // action button adding like delete 
+        });
+    } catch (error) {
+        console.error("Error fetching words:", error);
+    }
+}
+
+// পেজ লোড হলে ওয়ার্ড লিস্ট দেখাবে
+fetchWords();
+</script>
+
+</body>
+</html>

@@ -1,17 +1,14 @@
 const Level = require("../models/level.model");
 
-// নতুন Level তৈরি করা
 const createLevel = async (req, res) => {
     try {
         const { level_no, lessonName } = req.body;
 
-        // চেক করা হচ্ছে level_no পূর্বে রয়েছে কিনা
         const existingLevel = await Level.findOne({ level_no });
         if (existingLevel) {
             return res.status(400).json({ message: "Level number already exists" });
         }
 
-        // নতুন Level তৈরি
         const newLevel = new Level({ level_no, lessonName });
         await newLevel.save();
 
@@ -21,7 +18,9 @@ const createLevel = async (req, res) => {
     }
 };
 
-// সব Level রিটার্ন করা
+
+
+
 const getAllLevels = async (req, res) => {
     try {
         const levels = await Level.find();
@@ -32,7 +31,7 @@ const getAllLevels = async (req, res) => {
 };
 
 
-// 🔹 Get Level by ID
+
 const getLevelById = async (req, res) => {
     try {
         const level = await Level.findById(req.params.id);

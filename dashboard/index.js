@@ -1,4 +1,4 @@
-const BASE_URL = "http://localhost:5000/api"; // Use your local API
+const BASE_URL = "http://localhost:5000/api"; 
 
 // Fetch Levels & Display Buttons
 async function fetchLevelLesson() {
@@ -33,7 +33,7 @@ function displayData(levels) {
 }
 
 async function fetchWordsByLevel(levelId) {
-    const wordsURL = `${BASE_URL}/words/level/${levelId}`; // Updated API URL
+    const wordsURL = `${BASE_URL}/words/level/${levelId}`; 
 
     try {
         const response = await fetch(wordsURL);
@@ -92,13 +92,14 @@ function showModal(word) {
             <p><strong>Sentence:</strong> ${word.sentence}</p>
             <p><strong>Parts of Speech:</strong> ${word.partsOfSpeech}</p>
             <p><strong>Pronunciation:</strong> ${word.pronunciation}</p>
-            <p><strong>Level:</strong> ${word.level}</p>
-            <p><strong>Synonyms:</strong> ${word.synonyms.join(", ")}</p>
+            <p><strong>Level:</strong> ${word.level ? word.level.lessonName : "Not Available"}</p>
+            <p><strong>Synonyms:</strong> ${Array.isArray(word.synonyms) ? word.synonyms.join(", ") : "None"}</p>
             <p><strong>Points:</strong> ${word.points}</p>
         </div>
     `;
     modal.classList.remove("hidden");
 }
+
 
 // Close Modal
 function closeModal() {

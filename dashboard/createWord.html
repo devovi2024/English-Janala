@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CreateWOrd</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+</head>
+<body>
+    <h2 class="text-2xl font-bold mb-4">Create a New Word</h2>
+<form id="wordForm" class="space-y-4">
+    <input type="text" id="word" placeholder="Enter Word" required class="input-field">
+    <input type="text" id="meaning" placeholder="Enter Meaning" required class="input-field">
+    <input type="text" id="pronunciation" placeholder="Enter Pronunciation" required class="input-field">
+    <input type="text" id="sentence" placeholder="Enter Example Sentence" class="input-field">
+    <input type="text" id="partsOfSpeech" placeholder="Enter Part of Speech" required class="input-field">
+    <input type="number" id="level_no" placeholder="Enter Level Number" required class="input-field">
+    <input type="text" id="synonyms" placeholder="Enter Synonyms (comma separated)" class="input-field">
+    <input type="number" id="points" placeholder="Enter Points" value="0" class="input-field">
+    <button type="submit" class="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-700 transition">Create Word</button>
+</form>
+<p id="message" class="mt-2 text-red-500"></p>
+
+<script>
+document.getElementById("wordForm").addEventListener("submit", async function(event) {
+    event.preventDefault();
+    const word = document.getElementById("word").value;
+    const meaning = document.getElementById("meaning").value;
+    const pronunciation = document.getElementById("pronunciation").value;
+    const sentence = document.getElementById("sentence").value;
+    const partsOfSpeech = document.getElementById("partsOfSpeech").value;
+    const level_no = document.getElementById("level_no").value;
+    const synonyms = document.getElementById("synonyms").value.split(",").map(s => s.trim());
+    const points = document.getElementById("points").value;
+    
+    const response = await fetch("http://localhost:5000/api/words/levelNo", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ word, meaning, pronunciation, sentence, partsOfSpeech, level_no, synonyms, points })
+    });
+    
+    const result = await response.json();
+    document.getElementById("message").textContent = result.message || "Error creating word";
+});
+</script>
+
+</body>
+</html>

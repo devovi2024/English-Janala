@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+    <header class="p-4 bg-gray-100 shadow-md">
+        <a href="/dashboard/index.html" 
+           class="inline-flex items-center px-4 py-2 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75 transition">
+            <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+            </svg>
+            Back
+        </a>
+    </header>
+    
+    <main class="flex h-screen">
+        <!-- Sidebar -->
+        <aside class="w-64 bg-blue-600 text-white p-6">
+            <h2 class="text-xl font-bold mb-4">Dashboard</h2>
+            <nav>
+                <ul class="space-y-3">
+                    <li>
+                        <a href="#" class="sidebar-link block p-3 bg-blue-500 rounded hover:bg-blue-700 transition" data-page="./dashboard.html">
+                            Dashboard
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="sidebar-link block p-3 bg-blue-500 rounded hover:bg-blue-700 transition" data-page="createLevel.html">
+                            Create Level
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="sidebar-link block p-3 bg-blue-500 rounded hover:bg-blue-700 transition" data-page="createWord.html">
+                            Create Word
+                        </a>
+                    </li>
+                    
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <section class="flex-1 p-6">
+            <div id="content" class="bg-white p-6 rounded shadow-md text-gray-800">
+                <h2 class="text-2xl font-bold">Welcome</h2>
+                <p>Select an option from the sidebar.</p>
+            </div>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
